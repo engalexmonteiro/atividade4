@@ -9,7 +9,13 @@
 #define CONFIGS_H_
 
 #define SD_PIN 4
-#define STARTCONFIG "start.conf"
+#define STARTCONFIG "\"start.cf\""
+
+#define TEMP_MIN 19.00
+#define TEMP_MAX 22.00
+#define HUM_MIN 60.00
+#define HUM_MAX 80.00
+
 
 int load_configs();
 

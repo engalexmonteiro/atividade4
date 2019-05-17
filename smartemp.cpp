@@ -51,9 +51,9 @@ void checktemp(){
 		hum_current = h;
 
 		if(temp_current<temp_min)
-				Serial.println("ajustar T: "  + String(t) + "ºC / H " + String(h));
+				Serial.println("ajustar T: "  + String(t) + "oC / H " + String(h));
    	    if(temp_current>temp_max)
-				Serial.println("ligar ar "  + String(t) + "ºC / H " + String(h));
+				Serial.println("ligar ar "  + String(t) + "C / H " + String(h));
 
 	  }
 
@@ -62,6 +62,8 @@ void checktemp(){
 
 
 void setup(){
+
+
 
 	Serial.begin(9600);
 
@@ -84,6 +86,7 @@ void setup(){
 }
 
 void loop() {
+
 
 	controll.run();
 
