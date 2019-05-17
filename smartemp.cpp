@@ -9,21 +9,21 @@
 #include "configs.h"
 
 //Parameters SmartTemp
-float temp_min=16;
-float temp_max=25;
+float temp_min=10;
+float temp_max=50;
 float temp_current=0;
 
-float hum_min=60;
-float hum_max=80;
-float hum_current;
+float hum_min=10;
+float hum_max=200;
+float hum_current=0;
 
-unsigned int period=1000;
+unsigned int period=5000;
 
-//Parameters Networking
-String ip = "192.168.1.200";
-String netmask = "255.255.255.0";
-String gw = "192.168.1.1";
-String dns = "8.8.8.8";
+String ip="";
+String netmask="";
+String gw="";
+String dns="";
+
 
 
 //Thread instances
@@ -43,7 +43,7 @@ void checktemp(){
 	  // testa se retorno é valido, caso contrário algo está errado.
 	  if (isnan(t) || isnan(h))
 	  {
-	    Serial.println("Failed to read from DHT");
+	    //Serial.println("Failed to read from DHT");
 	  }
 	  else{
 
@@ -51,9 +51,9 @@ void checktemp(){
 		hum_current = h;
 
 		if(temp_current<temp_min)
-				Serial.println("ajustar T: "  + String(t) + "oC / H " + String(h));
+				Serial.println("A-T: "  + String(t) + " ºC / H " + String(h));
    	    if(temp_current>temp_max)
-				Serial.println("ligar ar "  + String(t) + "C / H " + String(h));
+				Serial.println("L-T "  + String(t) + " ºC / H " + String(h));
 
 	  }
 
@@ -64,7 +64,7 @@ void checktemp(){
 void setup(){
 
 
-
+	Serial.flush();
 	Serial.begin(9600);
 
 
@@ -83,11 +83,14 @@ void setup(){
 
 	controll.add(thread_Cli);
 	controll.add(thread_CheckTemp);
+
 }
 
 void loop() {
 
 
 	controll.run();
+
+
 
 }

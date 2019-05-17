@@ -19,5 +19,8 @@
 
 int load_configs();
 
+//Parameters Networking
+
+
 
 #endif /* CONFIGS_H_ */

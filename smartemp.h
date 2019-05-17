@@ -27,8 +27,13 @@ extern float hum_current;
 
 extern String ip;
 extern String netmask;
-extern String dns;
 extern String gw;
+extern String dns;
+
+//extern String ip;
+//extern String netmask;
+//extern char dns;
+//extern String gw;
 
 
 extern unsigned int period;

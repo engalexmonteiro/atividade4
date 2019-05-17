@@ -11,8 +11,89 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <SD.h>
-
 #include "smartemp.h"
+#include "cli.h"
+
+const char def_ip[] PROGMEM = "192.168.1.200";
+const char def_netmask[] PROGMEM = "255.255.255.0";
+const char def_gw[] PROGMEM = "192.168.1.1";
+const char def_dns[] PROGMEM = "8.8.8.8";
+
+
+float readConfigFloat(String conf,const char* param){
+
+	char buffer[30];
+
+	strcpy_P(buffer, (char *)param);
+
+	//Serial.println(buffer);
+
+	uint16_t position = conf.indexOf(buffer);
+
+	if(position != -1){
+
+		position = conf.indexOf("=",position);
+
+
+		uint16_t finalp = conf.indexOf('\n',position);
+
+
+		String temp = conf.substring(position+1,finalp);
+
+
+
+		return temp.toFloat();
+	}
+
+	return position;
+};
+
+int readConfigInt(String conf,const char* param){
+
+	char buffer[30];
+
+	strcpy_P(buffer, (char *)param);
+
+	uint16_t position = conf.indexOf(buffer);
+
+	if(position != -1){
+
+	position = conf.indexOf("=",position);
+
+	uint16_t finalp = conf.indexOf('\n',position);
+
+	String temp = conf.substring(position+1,finalp);
+
+
+	return temp.toInt();
+
+	}
+
+	return position;
+};
+
+String readConfigString(String conf,const char* param){
+
+		char buffer[30];
+
+		strcpy_P(buffer, (char *)param);
+
+		uint16_t position = conf.indexOf(buffer);
+
+		if(position != -1){
+
+			position = conf.indexOf("=",position);
+
+			uint16_t finalp = conf.indexOf('\n',position);
+
+			return conf.substring(position+1,finalp);
+
+		}
+
+
+		return "";
+};
+
 
 int configFile(){
 
@@ -24,17 +105,25 @@ int configFile(){
 
 		while (myFile.available()) {
 				conf += (char)myFile.read();
-				//Serial.println(conf);
 	     }
-		Serial.println(conf);
 
+
+	temp_min = readConfigFloat(conf,TEMPMIN);
+	temp_max =readConfigFloat(conf,TEMPMAX);
+	hum_min = readConfigFloat(conf,HUMMIN);
+	hum_max = readConfigFloat(conf,HUMMAX);
+	period = readConfigInt(conf,PERIOD);
+	ip = readConfigString(conf,IP);
+	netmask = readConfigString(conf,NETMASK);
+	gw = readConfigString(conf,GW);
+	dns = readConfigString(conf,DNS);
 
         // close the file:
 	    myFile.close();
 
 	    return 0;
 	}else{
-		Serial.println("error open");
+		//Serial.println("error open");
 		return -1;
 	}
 }
