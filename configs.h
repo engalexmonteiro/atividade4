@@ -17,9 +17,10 @@
 #define TEMP_MAX 22.00
 #define HUM_MIN 60.00
 #define HUM_MAX 80.00
+#define PERIODI 5000
 
-#define DHTPIN  A1     // Pino que esta conectado o sensor
-#define DHTTYPE DHT11  // DHT 11
+#define DHTPIN  A1
+#define DHTTYPE DHT11
 
 //Parameters
 
@@ -42,8 +43,8 @@ extern unsigned int period;
 
 int load_configs();
 
+void print_configs();
 //Parameters Networking
-
 
 
 #endif /* CONFIGS_H_ */

@@ -26,6 +26,7 @@ extern const char IP[];
 extern const char NETMASK[];
 extern const char GW[];
 extern const char DNS[];
+extern const char *const cmd_table[];
 
 
 #endif /* CLI_H_ */

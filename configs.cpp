@@ -14,13 +14,10 @@
 #include "cli.h"
 
 
-
-const char def_ip[] 		PROGMEM = "192.168.1.200";
-const char def_netmask[] 	PROGMEM = "255.255.255.0";
-const char def_gw[] 		PROGMEM = "192.168.1.1";
-const char def_dns[] 		PROGMEM = "8.8.8.8";
-
-
+const char def_ip[] 		PROGMEM = "ip=192.168.1.200";
+const char def_netmask[] 	PROGMEM = "netmask=255.255.255.0";
+const char def_gw[] 		PROGMEM = "gateway=192.168.1.1";
+const char def_dns[] 		PROGMEM = "dns=8.8.8.8";
 
 
 float readConfigFloat(String conf,const char* param){
@@ -100,26 +97,28 @@ String readConfigString(String conf,const char* param){
 
 int configFile(){
 
-	File myFile = SD.open("start.cf");
+	File myFile = SD.open(STARTCONFIG);
 
 	String conf = "";
 
 	if (myFile) {
 
 		while (myFile.available()) {
-				conf += (char)myFile.read();
-	     }
+			conf += (char)myFile.read();
+	    }
 
+		//Sensor
+		temp_min 	= readConfigFloat(conf,TEMPMIN);
+		temp_max 	= readConfigFloat(conf,TEMPMAX);
+		hum_min 	= readConfigFloat(conf,HUMMIN);
+		hum_max 	= readConfigFloat(conf,HUMMAX);
+		period 		= readConfigInt(conf,PERIOD);
 
-	temp_min = readConfigFloat(conf,TEMPMIN);
-	temp_max =readConfigFloat(conf,TEMPMAX);
-	hum_min = readConfigFloat(conf,HUMMIN);
-	hum_max = readConfigFloat(conf,HUMMAX);
-	period = readConfigInt(conf,PERIOD);
-	ip = readConfigString(conf,IP);
-	netmask = readConfigString(conf,NETMASK);
-	gw = readConfigString(conf,GW);
-	dns = readConfigString(conf,DNS);
+		//Networking
+		ip 		= readConfigString(conf,IP);
+		netmask = readConfigString(conf,NETMASK);
+		gw 		= readConfigString(conf,GW);
+		dns 	= readConfigString(conf,DNS);
 
         // close the file:
 	    myFile.close();
@@ -132,23 +131,26 @@ int configFile(){
 }
 
 
-/*
-int generateConfigFile(){
 
-	File myFile = SD.open("start.cf", FILE_WRITE);
+/*int generateConfigFile(){
+
+	SD.remove(STARTCONFIG);
+	File myFile = SD.open(STARTCONFIG, FILE_WRITE);
 
 	  // if the file opened okay, write to it:
 	if (myFile) {
-	    Serial.println("Writing to start.conf");
+		Serial.print("Writing to ");
+	    Serial.println(STARTCONFIG);
+
 	    myFile.println("temp_min=16");
 	    myFile.println("temp_max=22");
 	    myFile.println("hum_min=60");
-	    myFile.println("hum_min=70");
+	    myFile.println("hum_max=70");
 	    myFile.println("period=1000");
 	    myFile.println("ip=192.168.1.1");
 	    myFile.println("netmask=255.255.255.0");
 	    myFile.println("gateway=192.168.1.1");
-	    myFile.println("dns=8.8.8.8.");
+	    myFile.println("dns=8.8.8.8");
 
 	    // close the file:
 	    myFile.close();
@@ -159,13 +161,22 @@ int generateConfigFile(){
 	    Serial.println("error opening ");
 	 }
 
-
-
-
 	return 0;
-}
-*/
+}*/
 
+
+
+void print_configs(){
+	Serial.println(temp_min);
+	Serial.println(temp_max);
+	Serial.println(hum_min);
+	Serial.println(hum_max);
+	Serial.println(period);
+	Serial.println(ip);
+	Serial.println(netmask);
+	Serial.println(gw);
+	Serial.println(dns);
+}
 
 
 int load_configs(){
@@ -178,11 +189,11 @@ int load_configs(){
 	}
 
 	if (SD.exists(STARTCONFIG)) {
-		//	Serial.println("Loadings configurations");
+			Serial.println("Loadings configurations");
 			configFile();
 	}else {
-		//	Serial.println("Generating default and loading configuration file");
-			//generateConfigFile();
+			Serial.println("Generating default and loading configuration file");
+	//		generateConfigFile();
 			configFile();
 	 }
 

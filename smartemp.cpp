@@ -7,15 +7,15 @@
 
 
 //Parameters SmartTemp
-float temp_min=10;
-float temp_max=50;
-float temp_current=0;
+float temp_min=TEMP_MIN;
+float temp_max=TEMP_MAX;
+float temp_current=-1;
 
-float hum_min=10;
-float hum_max=200;
-float hum_current=0;
+float hum_min=TEMP_MIN;
+float hum_max=TEMP_MAX;
+float hum_current=-1;
 
-unsigned int period=5000;
+unsigned int period=PERIODI;
 
 String ip="";
 String netmask="";
@@ -47,10 +47,12 @@ void checktemp(){
 		temp_current = t;
 		hum_current = h;
 
+/*
 		if(temp_current<temp_min)
 				Serial.println("A-T: "  + String(t) + " ºC / H " + String(h));
    	    if(temp_current>temp_max)
 				Serial.println("L-T "  + String(t) + " ºC / H " + String(h));
+*/
 
 	  }
 
@@ -69,8 +71,9 @@ void setup(){
 	Serial.flush();
 	Serial.begin(9600);
 
-
+//	print_configs();
 	load_configs();
+	//print_configs();
 
 	dht.begin();
 
@@ -90,9 +93,6 @@ void setup(){
 
 void loop() {
 
-
 	controll.run();
-
-
 
 }
