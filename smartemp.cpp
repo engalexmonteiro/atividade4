@@ -1,12 +1,10 @@
-#include "smartemp.h"
-
+#include "configs.h"
 #include <Arduino.h>
 #include <Thread.h>
 #include <ThreadController.h>
 #include <DHT.h>
 #include "cli.h"
-#include "smartemp.h"
-#include "configs.h"
+
 
 //Parameters SmartTemp
 float temp_min=10;
@@ -23,7 +21,6 @@ String ip="";
 String netmask="";
 String gw="";
 String dns="";
-
 
 
 //Thread instances
@@ -63,6 +60,11 @@ void checktemp(){
 
 void setup(){
 
+
+	pinMode(A0,OUTPUT);
+	pinMode(A3,OUTPUT);
+	digitalWrite(A0,HIGH);
+	digitalWrite(A3,LOW);
 
 	Serial.flush();
 	Serial.begin(9600);

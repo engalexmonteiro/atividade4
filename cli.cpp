@@ -7,7 +7,7 @@
 
 #include <Arduino.h>
 #include "cli.h"
-#include "smartemp.h"
+#include "configs.h"
 
 const char SMARTTEMP[] PROGMEM = "\r\nsmarTemp> ";
 const char LED13[] PROGMEM = "led13\r";

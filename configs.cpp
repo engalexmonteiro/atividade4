@@ -11,13 +11,16 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <SD.h>
-#include "smartemp.h"
 #include "cli.h"
 
-const char def_ip[] PROGMEM = "192.168.1.200";
-const char def_netmask[] PROGMEM = "255.255.255.0";
-const char def_gw[] PROGMEM = "192.168.1.1";
-const char def_dns[] PROGMEM = "8.8.8.8";
+
+
+const char def_ip[] 		PROGMEM = "192.168.1.200";
+const char def_netmask[] 	PROGMEM = "255.255.255.0";
+const char def_gw[] 		PROGMEM = "192.168.1.1";
+const char def_dns[] 		PROGMEM = "8.8.8.8";
+
+
 
 
 float readConfigFloat(String conf,const char* param){
