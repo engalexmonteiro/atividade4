@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=["SD",{"package"\:"arduino","platform"\:"avr","library"\:"SPI"},"ArduinoThread","DHT sensor library","Adafruit Unified Sensor"]
+libraries=["SD",{"package"\:"arduino","platform"\:"avr","library"\:"SPI"},"ArduinoThread","DHT sensor library","Adafruit Unified Sensor","LiquidCrystal"]

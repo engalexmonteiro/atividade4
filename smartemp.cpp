@@ -4,6 +4,7 @@
 #include <ThreadController.h>
 #include <DHT.h>
 #include "cli.h"
+#include "ihm.h"
 
 
 //Parameters SmartTemp
@@ -63,7 +64,7 @@ void checktemp(){
 void setup(){
 
 
-	pinMode(A0,OUTPUT);
+/*	pinMode(A0,OUTPUT);
 	pinMode(A3,OUTPUT);
 	digitalWrite(A0,HIGH);
 	digitalWrite(A3,LOW);
@@ -71,9 +72,7 @@ void setup(){
 	Serial.flush();
 	Serial.begin(9600);
 
-//	print_configs();
 	load_configs();
-	//print_configs();
 
 	dht.begin();
 
@@ -87,12 +86,15 @@ void setup(){
 	thread_CheckTemp->setInterval(0);
 
 	controll.add(thread_Cli);
-	controll.add(thread_CheckTemp);
+	controll.add(thread_CheckTemp);*/
+
+	ihm_Start();
 
 }
 
 void loop() {
 
-	controll.run();
+//	controll.run();
+	ihm_Service();
 
 }
