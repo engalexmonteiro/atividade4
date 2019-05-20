@@ -64,13 +64,14 @@ void checktemp(){
 void setup(){
 
 
+	Serial.begin(9600);
 /*	pinMode(A0,OUTPUT);
 	pinMode(A3,OUTPUT);
 	digitalWrite(A0,HIGH);
 	digitalWrite(A3,LOW);
 
 	Serial.flush();
-	Serial.begin(9600);
+
 
 	load_configs();
 
