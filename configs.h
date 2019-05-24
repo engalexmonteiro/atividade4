@@ -19,7 +19,7 @@
 #define HUM_MAX 80.00
 #define PERIODI 5000
 
-#define DHTPIN  A1
+#define DHTPIN  A2
 #define DHTTYPE DHT11
 
 //Parameters
@@ -34,6 +34,12 @@ extern float hum_max;
 extern float temp_current;
 extern float hum_current;
 
+/*extern byte ip[];
+extern byte netmask[];
+extern byte gw[];
+extern byte dns[];*/
+
+
 extern String ip;
 extern String netmask;
 extern String gw;
@@ -46,5 +52,8 @@ int load_configs();
 void print_configs();
 //Parameters Networking
 
+String ipByteToString(byte ip[]);
+
+int ipStringToByte(String address, byte ip[]);
 
 #endif /* CONFIGS_H_ */

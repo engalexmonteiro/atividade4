@@ -20,6 +20,30 @@ const char def_gw[] 		PROGMEM = "gateway=192.168.1.1";
 const char def_dns[] 		PROGMEM = "dns=8.8.8.8";
 
 
+int ipStringToByte(String address, byte ip[]){
+
+  uint8_t i,pos,ints=0;
+
+  for(i=0;i<4;i++){
+    pos = address.indexOf(".",ints);
+    ip[i] = address.substring(ints,pos).toInt();
+    ints = pos+1;
+  }
+
+  return 0;
+}
+
+String ipByteToString(byte ip[]){
+  String address;
+  uint8_t i;
+  for(i=0;i<4;i++){
+    address+=ip[i];
+    if(i<3)
+      address+=".";
+  }
+  return address;
+}
+
 float readConfigFloat(String conf,const char* param){
 
 	char buffer[30];

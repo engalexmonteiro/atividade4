@@ -28,6 +28,7 @@ String dns="";
 ThreadController controll = new ThreadController();
 Thread *thread_Cli = new Thread();
 Thread *thread_CheckTemp = new Thread();
+Thread *thread_IHM = new Thread();
 
 
 //SmartTemp objects
@@ -65,13 +66,13 @@ void setup(){
 
 
 	Serial.begin(9600);
-/*	pinMode(A0,OUTPUT);
-	pinMode(A3,OUTPUT);
-	digitalWrite(A0,HIGH);
-	digitalWrite(A3,LOW);
+	pinMode(A1,OUTPUT);
+	pinMode(A4,OUTPUT);
+	digitalWrite(A1,HIGH);
+	digitalWrite(A4,LOW);
 
 	Serial.flush();
-
+	Serial.begin(9600);
 
 	load_configs();
 
@@ -83,11 +84,15 @@ void setup(){
 	thread_Cli->onRun(checktemp);
 	thread_Cli->setInterval(0);
 
-	thread_CheckTemp->onRun(cli_init);
+	/*	thread_CheckTemp->onRun(cli_init);
+	thread_CheckTemp->setInterval(0);*/
+
+	thread_CheckTemp->onRun(ihm_Service);
 	thread_CheckTemp->setInterval(0);
 
-	controll.add(thread_Cli);
-	controll.add(thread_CheckTemp);*/
+	//controll.add(thread_Cli);
+	controll.add(thread_CheckTemp);
+	controll.add(thread_IHM);
 
 	ihm_Start();
 
@@ -95,7 +100,7 @@ void setup(){
 
 void loop() {
 
-//	controll.run();
-	ihm_Service();
+	controll.run();
+//	ihm_Service();
 
 }
