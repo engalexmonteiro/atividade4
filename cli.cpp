@@ -57,25 +57,25 @@ int command_cli(String command){
 
 	strcpy_P(buffer, (char *)IP);
 	if(command.equals(String(buffer) + '\r')){
-				Serial.print(ip);
+				Serial.print(ipByteToString(ip));
 				return 0;
 	}
 
 	strcpy_P(buffer, (char *)NETMASK);
 	if(command.equals(String(buffer) + '\r')){
-				Serial.print(netmask);
+				Serial.print(ipByteToString(netmask));
 				return 0;
 	}
 
 	strcpy_P(buffer, (char *)GW);
 	if(command.equals(String(buffer) + '\r')){
-				Serial.print(gw);
+				Serial.print(ipByteToString(gw));
 				return 0;
 	}
 
 	strcpy_P(buffer, (char *)DNS);
 	if(command.equals(String(buffer) + '\r')){
-				Serial.print(dns);
+				Serial.print(ipByteToString(dns));
 				return 0;
 	}
 
@@ -109,30 +109,34 @@ int command_cli(String command){
 
 	strcpy_P(buffer, (char *)IP);
 	if(command.startsWith(String(buffer) + "=")){
-			ip= command.substring(command.indexOf('=')+1);
-			Serial.print(ip);
+			String temp = command.substring(command.indexOf('=')+1);
+			ipStringToByte(temp,ip);
+			Serial.print(ipByteToString(ip));
 			return 0;
 	}
 
 
 	strcpy_P(buffer, (char *)NETMASK);
 	if(command.startsWith(String(buffer) + "=")){
-			netmask= command.substring(command.indexOf('=')+1);
-			Serial.print(netmask);
+			String temp = command.substring(command.indexOf('=')+1);
+			ipStringToByte(temp,netmask);
+			Serial.print(ipByteToString(netmask));
 			return 0;
 	}
 
 	strcpy_P(buffer, (char *)GW);
 	if(command.startsWith(String(buffer) + "=")){
-				gw = command.substring(command.indexOf('=')+1);
-				Serial.print(gw);
+					String temp = command.substring(command.indexOf('=')+1);
+					ipStringToByte(temp,gw);
+					Serial.print(ipByteToString(gw));
 				return 0;
 	}
 
 	strcpy_P(buffer, (char *)DNS);
 	if(command.startsWith(String(buffer) + "=")){
-				dns = command.substring(command.indexOf('=')+1);
-				Serial.print(dns);
+				String temp = command.substring(command.indexOf('=')+1);
+				ipStringToByte(temp,dns);
+				Serial.print(ipByteToString(dns));
 				return 0;
 	}
 

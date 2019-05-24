@@ -18,11 +18,10 @@ float hum_current=-1;
 
 unsigned int period=PERIODI;
 
-String ip="";
-String netmask="";
-String gw="";
-String dns="";
-
+byte ip[]={192,168,1,250};
+byte netmask[]={255,255,255,255};
+byte gw[]={192,168,1,1};
+byte dns[]={192.168,1,1};
 
 //Thread instances
 ThreadController controll = new ThreadController();

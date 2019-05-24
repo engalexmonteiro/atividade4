@@ -139,10 +139,10 @@ int configFile(){
 		period 		= readConfigInt(conf,PERIOD);
 
 		//Networking
-		ip 		= readConfigString(conf,IP);
-		netmask = readConfigString(conf,NETMASK);
-		gw 		= readConfigString(conf,GW);
-		dns 	= readConfigString(conf,DNS);
+		ipStringToByte(readConfigString(conf,IP),ip);
+		ipStringToByte(readConfigString(conf,NETMASK),netmask);
+		ipStringToByte(readConfigString(conf,GW),gw);
+		ipStringToByte(readConfigString(conf,DNS),dns);
 
         // close the file:
 	    myFile.close();
@@ -196,10 +196,10 @@ void print_configs(){
 	Serial.println(hum_min);
 	Serial.println(hum_max);
 	Serial.println(period);
-	Serial.println(ip);
-	Serial.println(netmask);
-	Serial.println(gw);
-	Serial.println(dns);
+	Serial.println(ipByteToString(ip));
+	Serial.println(ipByteToString(netmask));
+	Serial.println(ipByteToString(gw));
+	Serial.println(ipByteToString(dns));
 }
 
 

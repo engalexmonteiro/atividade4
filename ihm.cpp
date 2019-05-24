@@ -11,11 +11,37 @@
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // Define Pinos do Display
 
-int Menu = 0; // Inicializa valores para Menu
-int estado = 0; // Inicializa valores para estado
-int AntEstado = 0;
+
+int Menu = 0;                    // Inicializa valores para Menu
+uint8_t state = S_MONITOR;      // Inicializa valores para estado
+uint8_t oldState = S_MONITOR;
+uint8_t state_selected = S_MONITOR;
 int tempc=0;
 int humic=0;
+
+uint8_t readButton(){
+
+	uint16_t x = analogRead(A0);
+
+	uint8_t button = 0;
+
+	if (x < 10) { // Define valores máximos para UP em ValEstado = 1
+		button = RIGHT;
+	}
+	else if (x < 200) { // Define valores máximos para UP em ValEstado = 1
+		button = UP;
+	}
+	else if (x < 300) {
+		button = DOWN;
+	}
+	else if (x < 600){ // Define ação nula para Left
+		button = LEFT;
+	}
+	else if (x < 800){ // Define valores máximos para Select em ValEstado = 3
+		button = SELECT;
+	}
+	return button;
+}
 
 void clearPrintTitle() {
 	lcd.clear();
@@ -24,48 +50,130 @@ void clearPrintTitle() {
 	lcd.setCursor(0,1);
 }
 
-void mainPrintTitle() {
-	if(tempc != temp_current || humic != hum_current){
-		clearPrintTitle();
-		lcd.setCursor(3,1);
-		lcd.print(String(temp_current).substring(0,2));
-		lcd.print("C/HUM:");
-		lcd.print(String(hum_current).substring(0,2));
-		lcd.print("%");
-		tempc=temp_current;
-		humic=hum_current;
-	}
+void monitorState() {
+
+	lcd.clear();
+	lcd.setCursor(0,0);
+	lcd.print("--> Monitoring");
 	lcd.setCursor(0,1);
+	lcd.print("T:" + String(temp_current).substring(0,2) +  "C/HUM:" + String(hum_current).substring(0,2) + "%");
+
+	while(state_selected == S_MONITOR){
+
+		if(readButton() == LEFT){
+			state_selected = oldState;
+			Menu = oldState;
+			clearPrintTitle();
+			break;
+		}
+
+		if(tempc != temp_current || humic != hum_current){
+			clearPrintTitle();
+			lcd.setCursor(3,1);
+			lcd.print(String(temp_current).substring(0,2));
+			lcd.print("C/HUM:");
+			lcd.print(String(hum_current).substring(0,2));
+			lcd.print("%");
+			tempc=temp_current;
+			humic=hum_current;
+		}
+		lcd.setCursor(0,1);
+	}
+
 }
 
 
 
-void displayMenu(int x) {
-	switch (x) {
-	case 0:
+void mainMenu(int x) {
+
+	switch (x){
+
+	case S_MONITOR:
 		clearPrintTitle();
-		lcd.print("T:" + String(temp_current).substring(0,2) + "*C/H:" + String(hum_current).substring(0,2) + "%"); // Imprime na tela a opção do Menu
+		lcd.print("--->Monitor<---"); // Imprime na tela a opção do Menu
 		break;
-	case 1:
-		clearPrintTitle();
-		lcd.print("--->Monitoring<---"); // Imprime na tela a opção do Menu
-		break;
-	case 2:
+	case S_SETTING:
 		clearPrintTitle();
 		lcd.print("--->Settings<---"); // Imprime na tela a opção do Menu
 		break;
+	case S_NETWORK:
+		clearPrintTitle();
+		lcd.print("--->Networking<---"); // Imprime na tela a opção do Menu
+		break;
+	}
+
+}
+
+void settingMenu(int x) {
+	switch (x) {
+	lcd.clear();
+	lcd.setCursor(0,0);
+	case 1:
+		lcd.print("sett --> temp min"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(ip));
+		break;
+	case 2:
+		lcd.print("sett --> temp max"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(netmask));
+		break;
+	case 3:
+		lcd.print("sett --> hum min"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(gw));
+		break;
+	case 4:
+		lcd.print("sett --> hum max"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(dns));
+		break;
+	case 5:
+		lcd.print("sett --> inteval"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(dns));
+		break;
+	}
+}
+
+void networkMenu(int x) {
+	switch (x) {
+	lcd.clear();
+	lcd.setCursor(0,0);
+	case 1:
+		lcd.print("net --> iP"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(ip));
+		break;
+	case 2:
+		lcd.print("net --> netmask"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(netmask));
+		break;
+	case 3:
+		lcd.print("net --> gateway"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(gw));
+		break;
+	case 4:
+		lcd.print("net --> DNS"); // Imprime na tela opção escolhida
+		lcd.setCursor(0,1);
+		lcd.print(ipByteToString(dns));
+		break;
+
 	}
 }
 
 void selectMenu(int x) {
+
 	switch (x) {
-	case 1:
-		clearPrintTitle();
-		lcd.print("Monitoring"); // Imprime na tela opção escolhida
+	case S_MONITOR:
+		monitorState();
+	case S_NETWORK:
+		networkMenu(0);
 		break;
-	case 2:
-		clearPrintTitle();
-		lcd.print("Settings"); // Imprime na tela opção escolhida
+	case S_SETTING:
+		settingMenu(0);
 		break;
 	}
 }
@@ -78,52 +186,54 @@ void ihm_Start(){
 }
 
 
+
+
+
 void ihm_Service() {
 
-	int ValEstado = 0; // Inicializa valores para ValEstado
-	int x = analogRead (0);
+	uint8_t temp =0;
 
+	uint8_t button = readButton();
 
 	lcd.setCursor(0,0); // Posiciona Cursor
 
-	if (x < 80) { // Define valores máximos para UP em ValEstado = 1
-	}
-	else if (x < 200) {
-		ValEstado = 1;
-	}
-	else if (x < 400){ // Define valores máximos para Down em ValEstado = 2
-		ValEstado = 2;
-	}
-	else if (x < 600){ // Define ação nula para Left
-	}
-	else if (x < 800){ // Define valores máximos para Select em ValEstado = 3
-		ValEstado = 3;
-	}
-
-	if (Menu < 0 || Menu > 4) {
+	if (Menu < 0 || Menu > 3)
 		Menu = 0;
-	}
 
-	if(Menu == 0)
-		mainPrintTitle();
+	if (button != state) {
 
-	if (ValEstado != estado) {
-
-		if (ValEstado == 1) {
-			Menu = Menu - 1;
-			displayMenu(Menu);
-		} else if (ValEstado == 2) {
-			Menu = Menu + 1;
-			displayMenu(Menu);
-		} else if (ValEstado == 3) {
-			selectMenu(Menu);
+		switch(button){
+				case RIGHT:
+						oldState = state_selected;
+						state_selected = Menu;
+						selectMenu(state_selected);
+						break;
+				case UP:
+						Menu = Menu - 1;
+						mainMenu(Menu);
+						break;
+				case DOWN:
+						Menu = Menu + 1;
+						mainMenu(Menu);
+						break;
+				case LEFT:
+						temp = state;
+						state = oldState;
+						oldState = temp;
+						break;
+				case SELECT:
+						oldState = state_selected;
+						state_selected = Menu;
+						selectMenu(state_selected);
+						break;
 		}
-		estado = ValEstado;
+
+			state = button;
 	}
 
-	Serial.print(estado);
+	Serial.print(state);
 	Serial.print(" | ");
-	Serial.print(ValEstado);
+	Serial.print(button);
 	Serial.print(" | ");
 	Serial.println(Menu);
 

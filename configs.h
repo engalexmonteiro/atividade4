@@ -34,16 +34,11 @@ extern float hum_max;
 extern float temp_current;
 extern float hum_current;
 
-/*extern byte ip[];
+extern byte ip[];
 extern byte netmask[];
 extern byte gw[];
-extern byte dns[];*/
+extern byte dns[];
 
-
-extern String ip;
-extern String netmask;
-extern String gw;
-extern String dns;
 
 extern unsigned int period;
 
