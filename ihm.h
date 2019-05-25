@@ -10,6 +10,7 @@
 
 
 //Buttons
+#define DELAY  70
 #define RIGHT  1
 #define UP     2
 #define DOWN   3
@@ -17,7 +18,7 @@
 #define SELECT 5
 
 //States
-enum STATES{S_MONITOR,S_LIST,S_SETTING,S_NETWORK};
+enum STATES{S_MONITOR,S_LIST,S_SETTING,S_NETWORK,S_EDIT};
 
 void ihm_Start();
 
