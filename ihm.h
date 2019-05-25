@@ -17,10 +17,7 @@
 #define SELECT 5
 
 //States
-#define S_LIST     0
-#define S_MONITOR  1
-#define S_SETTING  2
-#define S_NETWORK  3
+enum STATES{S_MONITOR,S_LIST,S_SETTING,S_NETWORK};
 
 void ihm_Start();
 

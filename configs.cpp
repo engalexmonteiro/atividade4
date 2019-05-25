@@ -37,7 +37,12 @@ String ipByteToString(byte ip[]){
   String address;
   uint8_t i;
   for(i=0;i<4;i++){
-    address+=ip[i];
+	if(ip[i]<10)
+		address+= "00" + String(ip[i]);
+	else if (ip[i]<100)
+			address+= "0" + String(ip[i]);
+		else
+			address+=ip[i];
     if(i<3)
       address+=".";
   }
