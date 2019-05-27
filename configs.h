@@ -39,14 +39,31 @@ extern byte netmask[];
 extern byte gw[];
 extern byte dns[];
 
+extern const char nameDevice[];
+extern const char SMARTTEMP[];
+extern const char LED13[];
+extern const char TEMP[];
+extern const char TEMPMIN[];
+extern const char TEMPMAX[];
+extern const char HUMMIN[];
+extern const char HUMMAX[];
+extern const char PERIOD[];
+extern const char UNKN[];
+
+extern const char IP[];
+extern const char NETMASK[];
+extern const char GW[];
+extern const char DNS[];
+extern const char *const cmd_table[];
 
 extern unsigned int period;
 
 int load_configs();
 
 void print_configs();
-//Parameters Networking
 
+String readStringMEM(char WORD[]);
+//Parameters Networking
 String ipByteToString(byte ip[]);
 
 int ipStringToByte(String address, byte ip[]);

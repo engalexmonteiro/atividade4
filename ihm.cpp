@@ -11,14 +11,15 @@
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // Define Pinos do Display
 
-int Menu = 0;                    // Inicializa valores para Menu
+uint8_t Menu = 0;                    // Inicializa valores para Menu
 STATES state = S_MONITOR;      // Inicializa valores para estado
 STATES oldState = S_MONITOR;
 STATES state_selected = S_MONITOR;
-int tempc=0;
-int humic=0;
+int16_t tempc=0;
+int16_t humic=0;
 
-
+const char setting[] PROGMEM = "Settings";
+const char network[] PROGMEM = "Networking";
 
 uint8_t readButton(){
 
@@ -46,7 +47,7 @@ uint8_t readButton(){
 void clearPrintTitle() {
 	lcd.clear();
 	lcd.setCursor(0,0);
-	lcd.print("smartTemp ");
+	lcd.print(readStringMEM(nameDevice));
 	lcd.setCursor(0,1);
 }
 
@@ -55,7 +56,7 @@ void monitorState(){
 	uint16_t button = readButton();
 	lcd.clear();
 	lcd.setCursor(0,0);
-	lcd.print("SmartTemp->Monitor");
+	lcd.print(readStringMEM(nameDevice));
 	lcd.setCursor(0,1);
 	lcd.print("T:" + String(temp_current).substring(0,2) +  "C/HUM:" + String(hum_current).substring(0,2) + "%");
 
@@ -63,6 +64,7 @@ void monitorState(){
 
 		button = readButton();
 		if(button == UP || button == DOWN){
+			oldState = state;
 			state = S_LIST;
 			clearPrintTitle();
 			break;
@@ -85,39 +87,6 @@ void monitorState(){
 
 }
 
-
-
-void settingMenu(int x) {
-	switch (x) {
-	lcd.clear();
-	lcd.setCursor(0,0);
-	case 1:
-		lcd.print("sett --> temp min"); // Imprime na tela opção escolhida
-		lcd.setCursor(0,1);
-		lcd.print(ipByteToString(ip));
-		break;
-	case 2:
-		lcd.print("sett --> temp max"); // Imprime na tela opção escolhida
-		lcd.setCursor(0,1);
-		lcd.print(ipByteToString(netmask));
-		break;
-	case 3:
-		lcd.print("sett --> hum min"); // Imprime na tela opção escolhida
-		lcd.setCursor(0,1);
-		lcd.print(ipByteToString(gw));
-		break;
-	case 4:
-		lcd.print("sett --> hum max"); // Imprime na tela opção escolhida
-		lcd.setCursor(0,1);
-		lcd.print(ipByteToString(dns));
-		break;
-	case 5:
-		lcd.print("sett --> inteval"); // Imprime na tela opção escolhida
-		lcd.setCursor(0,1);
-		lcd.print(ipByteToString(dns));
-		break;
-	}
-}
 
 void editConfigAddr(byte address[]){
 			uint8_t temp, button,pos;
@@ -214,35 +183,35 @@ void settingSelect(uint8_t x){
 	switch (x){
 	case 0:
 			lcd.setCursor(0,0);
-			lcd.print("--->Temp Min");
+			lcd.print(readStringMEM(TEMPMIN));
 			lcd.setCursor(0,1);
 			lcd.print(String(temp_min) + "*C");
 			temp_min = editConfigFloat(temp_min, 0.5);
 			break;
 	case 1:
 			lcd.setCursor(0,0);
-			lcd.print("--->Temp Max");
+			lcd.print(readStringMEM(TEMPMAX));
 			lcd.setCursor(0,1);
 			lcd.print(String(temp_max) + "*C");
 			temp_max = editConfigFloat(temp_max, 0.5);
 			break;
 	case 2:
 			lcd.setCursor(0,0);
-			lcd.print("--->Hum Min");
+			lcd.print(readStringMEM(HUMMIN));
 			lcd.setCursor(0,1);
 			lcd.print(String(hum_min) + "%");
 			hum_min = editConfigFloat(hum_min, 0.5);
 			break;
 	case 3:
 			lcd.setCursor(0,0);
-			lcd.print("--->Hum Max");
+			lcd.print(readStringMEM(HUMMAX));
 			lcd.setCursor(0,1);
 			lcd.print(String(hum_max) + "%");
 			hum_max = editConfigFloat(hum_max, 0.5);
 			break;
 	case 4:
 				lcd.setCursor(0,0);
-				lcd.print("--->Period");
+				lcd.print(readStringMEM(PERIOD));
 				lcd.setCursor(0,1);
 				lcd.print(String(period) + "ms");
 				period = editConfigFloat(period,100);
@@ -255,28 +224,28 @@ void networkSelect(uint8_t x){
 	switch (x){
 	case 0:
 			lcd.setCursor(0,0);
-			lcd.print("--->IP");
+			lcd.print(readStringMEM(IP));
 			lcd.setCursor(0,1);
 			lcd.print(ipByteToString(ip));
 			editConfigAddr(ip);
 			break;
 	case 1:
 			lcd.setCursor(0,0);
-			lcd.print("--->Netmask");
+			lcd.print(readStringMEM(NETMASK));
 			lcd.setCursor(0,1);
 			lcd.print(ipByteToString(netmask));
 			editConfigAddr(netmask);
 			break;
 	case 2:
 			lcd.setCursor(0,0);
-			lcd.print("--->Gateway");
+			lcd.print(readStringMEM(GW));
 			lcd.setCursor(0,1);
 			lcd.print(ipByteToString(gw));
 			editConfigAddr(gw);
 			break;
 	case 3:
 			lcd.setCursor(0,0);
-			lcd.print("--->DNS");
+			lcd.print(readStringMEM(DNS));
 			lcd.setCursor(0,1);
 			lcd.print(ipByteToString(dns));
 			editConfigAddr(dns);
@@ -287,21 +256,21 @@ void networkSelect(uint8_t x){
 int networkMenu(int x) {
 	lcd.clear();
 	lcd.setCursor(0,0);
-	lcd.print("->Networking");
+	lcd.print(readStringMEM(network));
 	lcd.setCursor(0,1);
 	switch (x) {
 	case 0:
-		lcd.print("ip"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(IP)); // Imprime na tela opção escolhida
 		break;
 	case 1:
-		lcd.print("netmask"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(NETMASK)); // Imprime na tela opção escolhida
 
 		break;
 	case 2:
-		lcd.print("gateway"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(GW)); // Imprime na tela opção escolhida
 		break;
 	case 3:
-		lcd.print("DNS"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(DNS)); // Imprime na tela opção escolhida
 		break;
 	}
 	return x;
@@ -311,67 +280,92 @@ int networkMenu(int x) {
 void ihm_Start(){
 	lcd.begin(16, 2); // Estabelece caracteres do display
 	clearPrintTitle();
-	tempc=temp_current;
+	tempc = temp_current;
 	humic = hum_current;
 }
 
 int settingsMenu(int x) {
 	lcd.clear();
 	lcd.setCursor(0,0);
-	lcd.print("->Settings");
+	lcd.print(readStringMEM(setting));
 	lcd.setCursor(0,1);
 	switch (x) {
 	case 0:
-		lcd.print("Temp Min"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(TEMPMIN)); // Imprime na tela opção escolhida
 		break;
 	case 1:
-		lcd.print("Temp Max"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(TEMPMAX)); // Imprime na tela opção escolhida
 		break;
 	case 2:
-		lcd.print("Hum Min"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(HUMMIN)); // Imprime na tela opção escolhida
 		break;
 	case 3:
-		lcd.print("Hum Max"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(HUMMAX)); // Imprime na tela opção escolhida
 		break;
 	case 4:
-		lcd.print("Period"); // Imprime na tela opção escolhida
+		lcd.print(readStringMEM(PERIOD)); // Imprime na tela opção escolhida
 		break;
 	}
 	return x;
 }
 
+int listMenu(int x){
+	lcd.clear();
+	lcd.setCursor(0,0);
+	lcd.print(readStringMEM(nameDevice));
+	lcd.setCursor(0,1);
+	switch (x) {
+	case 0:
+		lcd.print(readStringMEM(setting)); // Imprime na tela opção escolhida
+		break;
+	case 1:
+		lcd.print(readStringMEM(network)); // Imprime na tela opção escolhida
+		break;
+	}
+	return x;
+}
 
 void listState(){
-		uint8_t button = 0;
+		int8_t 		menu=0;
+		uint16_t	button = 0;
 		state_selected = S_SETTING;
-		lcd.clear();
-		lcd.setCursor(0,0);
-		lcd.print("SmartTemp");
-		lcd.setCursor(0,1);
-		lcd.print("-->Settings");
+		STATES s_temp = oldState;
 
 		oldState = state;
 
 		while(state == S_LIST){
 
+			if(s_temp != state){
+					listMenu(menu);
+					s_temp = state;
+			}
+
 			button = readButton();
 
 			if(button == UP){
 				state_selected = S_SETTING;
-				lcd.setCursor(0,1);
-				lcd.print("-->Settings  ");
+				menu--;
+				if(menu < 0) menu = 0;
+				listMenu(menu);
 			}
+
 			else if(button == DOWN){
-				lcd.setCursor(0,1);
-				lcd.print("-->Networking");
+				menu++;
+				if(menu > 1) menu = 1;
+				listMenu(menu);
 				state_selected = S_NETWORK;
-			}else if(button == RIGHT || button == SELECT)
+			}else if(button == RIGHT || button == SELECT){
+					s_temp=state_selected;
 					state = state_selected;
+			}
 			else if(button == LEFT){
+					s_temp = state_selected;
 					state = S_MONITOR;
 			}
 
 			delay(DELAY);
+
+			Serial.println(menu);
 		}
 
 

@@ -13,12 +13,28 @@
 #include <SD.h>
 #include "cli.h"
 
+const char nameDevice[] 	PROGMEM = "smartTemp";
+const char SMARTTEMP[] PROGMEM = "\r\nsmarTemp> ";
+const char LED13[] PROGMEM = "led13";
+const char TEMP[] PROGMEM = "temp_current";
+const char TEMPMIN[] PROGMEM = "temp_min";
+const char TEMPMAX[] PROGMEM = "temp_max";
+const char HUM[] PROGMEM = "hum_current";
+const char HUMMIN[] PROGMEM = "hum_min";
+const char HUMMAX[] PROGMEM = "hum_max";
+const char PERIOD[] PROGMEM = "period";
+const char UNKN[] PROGMEM = "unknow command: ";
+const char IP[] PROGMEM = "ip";
+const char NETMASK[] PROGMEM = "netmask";
+const char GW[] PROGMEM = "gateway";
+const char DNS[] PROGMEM = "dns";
 
-const char def_ip[] 		PROGMEM = "ip=192.168.1.200";
-const char def_netmask[] 	PROGMEM = "netmask=255.255.255.0";
-const char def_gw[] 		PROGMEM = "gateway=192.168.1.1";
-const char def_dns[] 		PROGMEM = "dns=8.8.8.8";
 
+String readStringMEM(char WORD[]){
+	char buffer[30];
+	strcpy_P(buffer, (char *)WORD);
+	return String(buffer);
+}
 
 int ipStringToByte(String address, byte ip[]){
 

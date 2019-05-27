@@ -9,22 +9,6 @@
 #include "cli.h"
 #include "configs.h"
 
-const char SMARTTEMP[] PROGMEM = "\r\nsmarTemp> ";
-const char LED13[] PROGMEM = "led13";
-const char TEMP[] PROGMEM = "temp_current";
-const char TEMPMIN[] PROGMEM = "temp_min";
-const char TEMPMAX[] PROGMEM = "temp_max";
-const char HUM[] PROGMEM = "hum_current";
-const char HUMMIN[] PROGMEM = "hum_min";
-const char HUMMAX[] PROGMEM = "hum_max";
-const char PERIOD[] PROGMEM = "period";
-const char UNKN[] PROGMEM = "unknow command: ";
-const char IP[] PROGMEM = "ip";
-const char NETMASK[] PROGMEM = "netmask";
-const char GW[] PROGMEM = "gateway";
-const char DNS[] PROGMEM = "dns";
-const char *const cmd_table[] PROGMEM = {TEMPMIN,TEMPMAX,HUMMIN,HUMMAX,PERIOD,IP,NETMASK,GW,DNS,UNKN};
-
 
 
 int command_cli(String command){
