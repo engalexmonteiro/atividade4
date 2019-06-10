@@ -10,6 +10,7 @@
 #include "configs.h"
 #include <Arduino.h>
 #include <SPI.h>
+#include <Ethernet.h>
 #include <SD.h>
 #include "cli.h"
 
@@ -28,6 +29,12 @@ const char IP[] PROGMEM = "ip";
 const char NETMASK[] PROGMEM = "netmask";
 const char GW[] PROGMEM = "gateway";
 const char DNS[] PROGMEM = "dns";
+
+byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+};
+
+EthernetServer server(80);
 
 
 String readStringMEM(char WORD[]){

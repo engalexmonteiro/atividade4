@@ -6,7 +6,7 @@
 #include "cli.h"
 #include "ihm.h"
 #include "eeprom.h"
-
+#include "wservereth.h"
 
 //Parameters SmartTemp
 float temp_min=TEMP_MIN;
@@ -100,9 +100,10 @@ void setup(){
 
 void loop() {
 
-	//controll.run();
+	controll.run();
 //	ihm_Service();
 	readConfigEEPROM();
+	web_server();
 	delay(DELAY);
 
 }

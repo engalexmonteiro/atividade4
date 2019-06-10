@@ -9,6 +9,7 @@
 #define CONFIGS_H_
 
 #include <Arduino.h>
+#include <Ethernet.h>
 
 #define SD_PIN 4
 #define STARTCONFIG "start.cf"
@@ -57,6 +58,10 @@ extern const char DNS[];
 extern const char *const cmd_table[];
 
 extern unsigned int period;
+
+extern byte mac[];
+
+extern EthernetServer server;
 
 int load_configs();
 
