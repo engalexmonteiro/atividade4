@@ -5,6 +5,7 @@
 #include <DHT.h>
 #include "cli.h"
 #include "ihm.h"
+#include "eeprom.h"
 
 
 //Parameters SmartTemp
@@ -99,7 +100,9 @@ void setup(){
 
 void loop() {
 
-	controll.run();
+	//controll.run();
 //	ihm_Service();
+	readConfigEEPROM();
+	delay(DELAY);
 
 }
